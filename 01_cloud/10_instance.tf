@@ -15,7 +15,7 @@ resource "yandex_compute_instance" "master_node" {
     }
   }
   metadata = {
-    user-data = "${file("user.yml")}"
+    user-data = "${file("users.yml")}"
   }
 }
 
@@ -38,7 +38,7 @@ resource "yandex_compute_instance" "worker-node-1" {
     }
   }
   metadata = {
-    user-data = "${file("user.yml")}"
+    user-data = "${file("users.yml")}"
   }
 }
 
@@ -62,7 +62,7 @@ resource "yandex_compute_instance" "worker-node-2" {
     }
   }
   metadata = {
-    user-data = "${file("user.yml")}"
+    user-data = "${file("users.yml")}"
   }
 }
 
