@@ -1,4 +1,5 @@
 resource "local_file" "hosts_templatefile" {
+  depends_on = [ yandex_compute_instance.worker-node-2 ]
   content = templatefile("${path.module}/hosts.tftpl",
     {
       master   = yandex_compute_instance.master_node,

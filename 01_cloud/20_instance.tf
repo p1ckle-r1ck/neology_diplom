@@ -20,6 +20,7 @@ resource "yandex_compute_instance" "master_node" {
 }
 
 resource "yandex_compute_instance" "worker-node-1" {
+  depends_on = [ yandex_compute_instance.master_node ]
   name = "worker1"
   zone = var.network-zones.b
   resources {
@@ -43,6 +44,7 @@ resource "yandex_compute_instance" "worker-node-1" {
 }
 
 resource "yandex_compute_instance" "worker-node-2" {
+  depends_on = [ yandex_compute_instance.worker-node-1 ]
   name        = "worker2"
   zone        = var.network-zones.d
   platform_id = "standard-v2"

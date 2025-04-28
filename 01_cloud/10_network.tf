@@ -3,6 +3,7 @@ resource "yandex_vpc_network" "vpc" {
 
 }
 resource "yandex_vpc_subnet" "a_subnet" {
+  depends_on = [ yandex_vpc_network.vpc ]
   name           = "a-subnet"
   v4_cidr_blocks = ["10.1.0.0/24"]
   network_id     = yandex_vpc_network.vpc.id
@@ -10,6 +11,7 @@ resource "yandex_vpc_subnet" "a_subnet" {
 }
 
 resource "yandex_vpc_subnet" "b_subnet" {
+  depends_on = [ yandex_vpc_subnet.a_subnet ]
   name           = "b-subnet"
   v4_cidr_blocks = ["10.2.0.0/24"]
   network_id     = yandex_vpc_network.vpc.id
@@ -18,6 +20,7 @@ resource "yandex_vpc_subnet" "b_subnet" {
 }
 
 resource "yandex_vpc_subnet" "d_subnet" {
+  depends_on = [ yandex_vpc_subnet.b_subnet ]
   name           = "d-subnet"
   v4_cidr_blocks = ["10.3.0.0/24"]
   network_id     = yandex_vpc_network.vpc.id
