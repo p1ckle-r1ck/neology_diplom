@@ -5,3 +5,7 @@
 */*.terraform/
 */users.yml
 */kubespray/
+*/kubeconfig/*
+**/*.creds
+.vscode/
+**/kubeconfig

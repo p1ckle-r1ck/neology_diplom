@@ -44,7 +44,7 @@ variable "k8s-instance" {
     }
   }
 }
-variable "force_redeploy" {
-  type = bool
-  description = "Deploy Kuber cluster?"
-}
+# variable "force_redeploy" {
+#   type = bool
+#   description = "Deploy Kuber cluster?"
+# }
