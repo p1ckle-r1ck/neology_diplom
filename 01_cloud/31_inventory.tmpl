@@ -1,0 +1,13 @@
+
+[kube_control_plane]
+
+${master.name} ansible_user=ubuntu ansible_host=${master.network_interface[0].nat_ip_address}
+
+
+[etcd:children]
+kube_control_plane
+
+[kube_node]
+
+${worker-1.name}  ansible_user=ubuntu  ansible_host=${worker-1.network_interface[0].nat_ip_address}
+${worker-2.name}  ansible_user=ubuntu  ansible_host=${worker-2.network_interface[0].nat_ip_address}
