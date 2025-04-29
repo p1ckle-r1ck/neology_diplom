@@ -28,7 +28,7 @@ resource "null_resource" "kubespray" {
 resource "null_resource" "kubeconfig" {
   provisioner "local-exec" {
     command = <<EOT
-    ANSIBLE_FORCE_COLOR=1 ansible-playbook -i kubespray_inv/inventory/sample/inventory.ini ./ansible/kubeconfig.yml -b -v
+    ANSIBLE_FORCE_COLOR=1 ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i kubespray_inv/inventory/sample/inventory.ini ./ansible/kubeconfig.yml --private-key=~/.ssh/netology -b -v
     EOT  
   }
 
