@@ -33,13 +33,13 @@ variable "k8s-instance" {
     "master_node" = {
       image_id      = "fd8u4lo7mqb9ikhuskqp"
       cores         = 2
-      memory        = 2
+      memory        = 4
       core_fraction = 20
     }
     "worker_node" = {
       image_id      = "fd8u4lo7mqb9ikhuskqp"
       cores         = 2
-      memory        = 2
+      memory        = 4
       core_fraction = 20
     }
   }

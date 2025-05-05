@@ -7,11 +7,11 @@ resource "null_resource" "monitoring_deployer" {
   provisioner "local-exec" {
     command = <<EOT
       kubectl apply --server-side -f ../03_monitoring/kube-prometheus/manifests/setup --kubeconfig ./kubeconfig/kubeconfig
-      kubectl wait \
+      kubectl --kubeconfig ./kubeconfig/kubeconfig wait \
 	  --for condition=Established \
 	  --all CustomResourceDefinition \
 	  --namespace=monitoring
-      kubectl apply -f ../03_monitoring/kube-prometheus/manifests/
+      kubectl apply -f ../03_monitoring/kube-prometheus/manifests/ --kubeconfig ./kubeconfig/kubeconfig
     EOT
   }
   depends_on = [ time_sleep.sleep_before_monitoring ]
@@ -24,4 +24,13 @@ resource "null_resource" "grafana_nodeport" {
         EOT
     }
     depends_on = [ null_resource.monitoring_deployer ]
+}
+
+resource "null_resource" "network_policy" {
+    provisioner "local-exec" {
+        command = <<EOT
+        kubectl apply -f ../03_monitoring/grafana/network-policy.yml --kubeconfig ./kubeconfig/kubeconfig
+        EOT
+    }
+    depends_on = [ null_resource.grafana_nodeport ]
 }

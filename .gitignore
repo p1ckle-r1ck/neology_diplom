@@ -9,3 +9,5 @@
 **/*.creds
 .vscode/
 **/kubeconfig
+**/inventory.ini
+**/05_atlantis/*
