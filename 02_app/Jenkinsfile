@@ -1,12 +1,6 @@
 pipeline {
     agent any
    
-    environment {
-        IMAGE_NAME = "harlock12/netology-nginx"
-        IMAGE_TAG = "${env.BUILD_NUMBER}"
-    }
-
-    
     stages {
 
         stage('Checkout') {
@@ -14,6 +8,7 @@ pipeline {
                 checkout scm
             }
         }
+
 
         stage("get tag") {
             steps {
@@ -26,12 +21,19 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    docker.build("${IMAGE_NAME}:${IMAGE_TAG}")
+                echo " ============== start building image =================="
+                dir ('.') {
+                	sh """
+                    docker build -t harlock12/netology-nginx:$latestTag . 
+                    """
                 }
             }
         }
-        
+        // environment {
+        //     IMAGE_NAME = "harlock12/netology-nginx"
+
+        // }
+
         stage('Push to Docker Registry') {
             steps {
                 withCredentials([usernamePassword(
@@ -41,7 +43,7 @@ pipeline {
                 )]) {
                     sh """
                         echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                        docker push ${IMAGE_NAME}:${IMAGE_TAG}
+                        docker push harlock12/netology-nginx:${latestTag}
                     """
                 }
             }
@@ -53,7 +55,7 @@ pipeline {
                     sh """
                         export KUBECONFIG=$KUBECONFIG
                         # Патчим манифест или используем переменные, если нужно
-                        kubectl apply -f k8s/deployment.yaml
+                        kubectl apply -f deployment.yml
                     """
                 }
             }
@@ -62,10 +64,11 @@ pipeline {
 
     post {
         success {
-            echo "✅ Успешно задеплоено: ${IMAGE_NAME}:${IMAGE_TAG}"
+            echo "Успешно задеплоено: harlock12/netology:${latestTag}"
         }
         failure {
-            echo "❌ Ошибка во время сборки или деплоя"
+            echo "Ошибка во время сборки или деплоя"
+     
         }
     }
 }

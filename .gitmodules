@@ -1,3 +1,6 @@
 [submodule "03_monitoring/kube-prometheus"]
 	path = 03_monitoring/kube-prometheus
 	url = https://github.com/prometheus-operator/kube-prometheus.git
+# [submodule "02_app"]
+# 	path = 03_monitoring/kube-prometheus
+# 	url = https://github.com/prometheus-operator/kube-prometheus.git
