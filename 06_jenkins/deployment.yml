@@ -15,12 +15,35 @@ spec:
     spec:
       containers:
         - name: jenkins
-          image: harlock12/jenkins-netology:latest
+          image: harlock12/jenkins-netology
           ports:
             - containerPort: 8080
-          volumeMounts:
-            - name: jenkins-home
-              mountPath: /var/jenkins_home
-      volumes:
-        - name: jenkins-home
-          emptyDir: {}
+            - containerPort: 50000
+          env:
+            - name: DOCKER_HOST
+              value: "tcp://localhost:2375"
+        - name: dind
+          image: docker:dind
+          securityContext:
+            privileged: true
+          env:
+            - name: DOCKER_TLS_CERTDIR
+              value: ""
+          ports:
+            - containerPort: 2375
+---
+
+# jenkins-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: jenkins
+  namespace: jenkins
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 32080
+  selector:
+    app: jenkins
